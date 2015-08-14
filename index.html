@@ -1,0 +1,379 @@
+<!doctype html>
+<html ng-app="app">
+
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+		<script src="src/toastify.min.js"></script>
+		<script src="example/main.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/toastify.css">
+
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+		<style>
+
+			body {
+
+				padding: 0;
+				margin: 0;
+				font-family: 'Open Sans', sans-serif;
+
+			}
+
+			.toastContainer {
+				font-family: 'Verdana', sans-serif;
+			}
+
+			#header {
+				position: fixed;
+				width: 100%;
+				height: 110px;
+				top: 0;
+				z-index: 9;
+				background-color: rgba(250,250,250, 0.98);
+				border-bottom: 1px dotted #ccc;
+			}
+
+			#header h2 {
+				float: left;
+				margin: 14px 0 3px 20px;
+				text-align: left;
+				font-size: 26px;
+			}
+
+			#header p, #header a {
+				float: left;
+				margin: 0 0 0 22px;
+				clear: left;
+				font-size: 12px;
+				text-align: left;
+			}
+
+			#header a {
+				margin-top: 10px;
+				font-weight: bolder;
+				color: #0091FF;
+			}
+
+			#list-wrapper {
+				width: 80%;
+				background-color: black;
+				margin: 0 auto;
+			}
+
+			.note-layer {
+				position: absolute;
+				height: 100%;
+				top: 0;
+				left: 0;
+				width: 100%;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+
+			}
+
+			.note-layer > div {
+				display: inline-table;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				color: #fafafa;
+			}
+
+			.note-layer > div > div {
+				display: table-cell;
+				vertical-align: middle;
+				cursor: pointer;
+			}
+
+			.note-layer span {
+				border-top: 1px solid rgba(250,250,250,0.1);
+				border-bottom: 1px solid rgba(250,250,250,0.1);
+				padding: 4px 8px;
+				font-weight: bolder;
+			}
+
+			h2 {
+				margin: 0 0 10px 0;
+			}
+
+			#content-wrapper {
+				width: 100%;
+				margin-top: 160px;
+			}
+
+			.content-section {
+				margin: 80px 0 40px 20px;
+				margin: 50px auto;
+				max-width: 800px;
+				width: 90%;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+
+			.content-section .code-block {
+				padding: 20px;
+				background-color: #31393a;
+				color: #fafafa;
+				border-radius: 4px;
+				margin: 0 0 30px 0;
+				font-family: monospace;
+				font-size: 14px;
+				line-height: 22px;
+			}
+
+			.code-block .mark-red {
+				color: #FF7063;
+			}
+
+			.code-block .mark-yellow {
+				color: #FFEC5C;
+			}
+
+			.code-block .mark-blu {
+				color: #4cb5ff;
+			}
+
+			.code-block .mark-grey {
+				color: rgb(204, 204, 204);
+			}
+
+			.code-block .mark-light-blu {
+				color: #53e3d7;
+			}
+
+			.code-block .mark-orange {
+				color: #f3ad69;
+			}
+
+			.code-block .mark-comment {
+				color: rgb(130, 130, 130);
+			}
+
+			.content-section h3 {
+				/*color: #4c5859;*/
+				color: #31393a;
+				font-size: 26px;
+			}
+
+			.content-section .click-action {
+				margin-left: 20px;
+				color: #0091FF;
+				cursor: pointer;
+				border: 2px solid #0091FF;
+				border-radius: 34px;
+				padding: 11px 20px;
+				font-size: 13px;
+				text-align: center;
+				text-transform: uppercase;
+				background-color: transparent;
+				outline: none;
+				float: right;
+				margin-top: -5px;
+				-moz-transition: all .2s ease-out;
+				-webkit-transition: all .2s ease-out;
+				transition: all .2s ease-out;
+			}
+
+			.content-section .click-action:hover {
+				background-color: #0091FF;
+				color: white;
+				cursor: pointer;
+				border-radius: 2px;
+			}
+
+			.content-section .click-action:active {
+				background-color: #007bd9;			
+			}
+
+			.onDone {
+				background-color: #0091FF;
+				border-color: #0270c3;
+			}
+
+			.fade-in-layer {
+				-moz-animation: simpleFadeIn .2s ease-out;
+				-webkit-animation: simpleFadeIn .2s ease-out;
+				animation: simpleFadeIn .2s ease-out;
+			}
+
+
+			.fade-in {
+				-moz-animation: simpleFadeIn 1s linear;
+				-webkit-animation: simpleFadeIn 1s linear;
+				animation: simpleFadeIn 1s linear;
+			}
+
+			@keyframes simpleFadeIn {
+			    from {opacity: 0;}
+			    to {opacity: 1;}
+			}
+
+		</style>
+
+	</head>
+	<body ng-controller="prova">
+
+		<div id="header" style="text-align: left">
+			<h2>Toastify</h2>
+			<p>Toast messages for angularjs-based apps</p>
+			<a href="https://github.com/kyashan" target="_blank">https://github.com/kyashan</a>
+
+		</div>
+		<div id="content-wrapper">
+
+			<div class="content-section">
+				<h3>Toastify public methods</h3>
+				<p>Toastify returns a set of public methods you can use to modify the toast instance you created with create method (the first in the following list): </p>
+				<p class="code-block">
+					toastify.<span class="mark-blu">create</span>(<i class="mark-orange">params</i>) <span class="mark-comment">//Create a new toast instance</span><br/><br/>
+					toastify.<span class="mark-blu">done</span>(<i class="mark-orange">toast</i>) <span class="mark-comment">//Apply to toast done options specified in create method</span><br/><br/>
+					toastify.<span class="mark-blu">closeToast</span>(<i class="mark-orange">toast</i>) <span class="mark-comment">//Close the toast instance passed as parameter</span><br/><br/>
+					toastify.<span class="mark-blu">closeAllToasts</span>() <span class="mark-comment">//Close all toasts instances</span><br/>
+					
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Toastify default parameters to pass inside <i>toastify.create</i> method</h3>
+				<p class="code-block">
+				{ <br/>
+				&nbsp;&nbsp;toastCustomClass: <span class="mark-red">null</span>, <br/>
+				&nbsp;&nbsp;appendTo: <span class="mark-yellow">'body'</span>, <span class="mark-comment">//Id of html tag where to append toasts</span><br/>
+				&nbsp;&nbsp;closeByClick: <span class="mark-red">false</span>, <br/>
+				&nbsp;&nbsp;showClose: <span class="mark-red">true</span>, <br/>
+				&nbsp;&nbsp;autoclose: <span class="mark-red">true</span>, <br/>
+				&nbsp;&nbsp;timeout: <span class="mark-red">4000</span>, <br/>
+				&nbsp;&nbsp;message : <span class="mark-yellow">''</span>, <br/>
+				&nbsp;&nbsp;callback: <span class="mark-red">null</span>, <span class="mark-comment">//Callback when toast is closed</span><br/>
+				&nbsp;&nbsp;onclick: <span class="mark-red">null</span>, <span class="mark-comment">//Methods to call when click on entire toast is performed</span><br/>
+				&nbsp;&nbsp;template: <span class="mark-red">null</span>, <br/>
+				&nbsp;&nbsp;controller: <span class="mark-red">null</span>, <br/>
+				&nbsp;&nbsp;gravity: <span class="mark-yellow">'top'</span>, <span class="mark-comment">//Possible values are 'top' or 'bottom'</span><br/>
+				&nbsp;&nbsp;doneMessage: <span class="mark-yellow">''</span>, <br/>
+				&nbsp;&nbsp;doneClass: <span class="mark-yellow">'done'</span>, <span class="mark-comment">//Css class to apply on done method</span><br/>
+				&nbsp;&nbsp;doneAutoclose: <span class="mark-red">true</span>, <br/>
+				}
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Show a simple autoclosing toast <button class="click-action" ng-click="simpleAutoclose()">show it</button></h3>
+				<p class="code-block">
+					toastify.<span class="mark-blu">create</span>({ <br/>
+					&nbsp;&nbsp;timeout: <span class="mark-red">2000</span>, <br/>
+					&nbsp;&nbsp;message: <span class="mark-yellow">'Autoclosing toast'</span>,<br/>
+					});
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Show a simple error toast with callback<button class="click-action" ng-click="simpleError()">show it</button></h3>
+				<p class="code-block">
+				<span class="mark-light-blu ">function </span><span class="mark-blu">alertCallback</span>({<br/>
+					&nbsp;&nbsp;<span class="mark-light-blu">alert</span>(<span class="mark-yellow">'Toast closure callback'</span>)<br/>
+					});
+					<br/>
+					<br/>
+					toastify.<span class="mark-blu">create</span>({ <br/>
+					&nbsp;&nbsp;toastCustomClass: <span class="mark-yellow">'error'</span>, <br/>
+					&nbsp;&nbsp;autoclose: <span class="mark-red">false</span>, <br/>
+					&nbsp;&nbsp;message: <span class="mark-yellow">'Error message'</span>,<br/>
+					&nbsp;&nbsp;callback: <span>alertCallback</span>,<br/>
+					});
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Show a toast with a success message <button class="click-action" ng-click="successToast()">show it</button></h3>
+				<p class="code-block">
+					<span class="mark-comment">/*CSS*/</span><br/>
+					<span class="mark-red">.onDone</span> {<br/>
+					&nbsp; background-color: <span class="mark-blu">#0091FF</span>;<br/>
+					&nbsp; border-color: <span class="mark-blu">#0270c3</span>;<br/>
+					}
+					<br/>
+					<br/>
+					<span class="mark-comment">//Javascript</span><br/>
+					<span class="mark-grey">var</span> toast = toastify.<span class="mark-blu">create</span>({ <br/>
+					&nbsp;&nbsp;autoclose: <span class="mark-red">false</span>,  <span class="mark-comment">// if autoclose set to false, timeout refers to done duration</span><br/>
+					&nbsp;&nbsp;timeout: <span class="mark-red">2000</span>, <br/>
+					&nbsp;&nbsp;showClose: <span class="mark-red">false</span>, <br/>
+					&nbsp;&nbsp;message: <span class="mark-yellow">'Waiting for done...'</span>,<br/>
+					&nbsp;&nbsp;doneClass: <span class="mark-yellow">'onDone'</span>,<br/>
+					&nbsp;&nbsp;doneMessage: <span class="mark-yellow">'Done!'</span><br/>
+					});
+					<br/><br/>
+					<span class="mark-light-blu ">setTimeout</span>(<span class="mark-light-blu ">function</span>() {<br/>
+						&nbsp;&nbsp;tostify.<span class="mark-blu">done</span>(toast);<br/>
+					}, <span class="mark-red">2000</span>);
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Show a toast with a custom template <button class="click-action" ng-click="toastWithTemplate()">show it</button></h3>
+				<p class="code-block">
+					toastify.<span class="mark-blu">create</span>({ <br/>
+					&nbsp;&nbsp;timeout: <span class="mark-red">4000</span>, <br/>
+					&nbsp;&nbsp;template: <span class="mark-yellow">&#60;i style="color: rgb(255, 239, 153)">This is a template&#60;/i&#62;</span><br/>
+					});
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Show permanent toast at bottom of the page<button class="click-action" ng-click="toastDownToBottom()">show it</button></h3>
+				<p class="code-block">
+					toastify.<span class="mark-blu">create</span>({ <br/>
+					&nbsp;&nbsp;showClose: <span class="mark-red">false</span>, <br/>
+					&nbsp;&nbsp;autoClose: <span class="mark-red">false</span>, <br/>
+					&nbsp;&nbsp;gravity: <span class="mark-yellow">'bottom'</span>,<br/>
+					&nbsp;&nbsp;template: <span class="mark-yellow">&#60;p style="padding: 0 20px 0 20px">Click &#60;u ng-click="closeThisToast()" style="cursor: pointer; color: rgb(255, 239, 153)">here&#60;/u&#62; to close the toast&#60;/p&#62;</span><br/>
+					});
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Toast private methods</h3>
+				<p>Each toast created by create method comes with a set of methods attached to its scope.</p>
+				<p class="code-block">
+					<span class="mark-blu">closeThisToast</span>() <span class="mark-comment">//Close the toast instance. See example at previous point</span><br/><br/>
+					<span class="mark-blu">getToast</span>() <span class="mark-comment">//Return toast object</span><br/><br/>
+					<span class="mark-blu">closeAllToasts</span>() <span class="mark-comment">//Close all toasts instances</span><br/>
+					
+				</p>
+			</div>
+
+			<div class="content-section">
+				<h3>Toastify events</h3>
+				<p>Anytime a new toast has been created, is removing or has been removed, the following messages are broadcasted all over the web app</p>
+				<p class="code-block">
+					<span class="mark-comment">//On new toast creation</span><br/>
+					<span class="mark-red">$</span>scope.<span class="mark-red">$</span>on(<span class="mark-yellow">'toastify.toast-created'</span>, <span class="mark-light-blu">function</span>(<span class="mark-light-blu">event</span>, args){<br/>
+					<span class="mark-comment">//args.toast to get the toast instance</span><br/>
+					});<br/><br/><br/>
+
+					<span class="mark-comment">//When toast is removed (not considering animation duration)</span><br/>
+					<span class="mark-red">$</span>scope.<span class="mark-red">$</span>on(<span class="mark-yellow">'toastify.toast-removing'</span>, <span class="mark-light-blu">function</span>(<span class="mark-light-blu">event</span>, args){<br/>
+					<span class="mark-comment">//args.toast to get the toast instance</span><br/>
+					});<br/><br/><br/>
+
+					<span class="mark-comment">//When toast is removed and animation is concluded</span><br/>
+					<span class="mark-red">$</span>scope.<span class="mark-red">$</span>on(<span class="mark-yellow">'toastify.toast-removed'</span>, <span class="mark-light-blu">function</span>(<span class="mark-light-blu">event</span>, args){<br/>
+					<span class="mark-comment">//args.toast to get the toast instance</span><br/>
+					});<br/><br/>
+					
+				</p>
+			</div>
+
+		</div>
+		
+	</body>
+</html>
