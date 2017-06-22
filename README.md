@@ -3,7 +3,7 @@ Toast messages for angularjs-based apps
 
 ##### See demo and basic usage example at http://kyashan.github.io/toastify/
 
-<br/>
+
 ### Toastify parameters, to specify inside toastify.create() method
 
 ```javascript
@@ -26,14 +26,14 @@ Toast messages for angularjs-based apps
   }
 ```
 
-<br/>
+
 ## Dependencies
 
 - [angularjs](https://angularjs.org/)
 - [jquery](https://jquery.com/)
 
 
-<br/>
+
 ## License
 
 MIT
