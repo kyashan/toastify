@@ -4,7 +4,7 @@ Toast messages for angularjs-based apps
 ##### See demo and basic usage example at http://kyashan.github.io/toastify/
 
 <br/>
-#### Toastify parameters, to specify inside toastify.create() method
+### Toastify parameters, to specify inside toastify.create() method
 
 ```javascript
   {
